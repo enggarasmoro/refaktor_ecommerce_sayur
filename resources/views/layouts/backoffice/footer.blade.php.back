@@ -1,0 +1,84 @@
+<!-- Vendor -->
+<script src="{{asset('backoffice/vendor/jquery/jquery.js')}}"></script>
+<script src="{{asset('backoffice/vendor/jquery-browser-mobile/jquery.browser.mobile.js')}}"></script>
+<script src="{{asset('backoffice/vendor/popper/umd/popper.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap/js/bootstrap.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
+<script src="{{asset('backoffice/vendor/common/common.js')}}"></script>
+<script src="{{asset('backoffice/vendor/nanoscroller/nanoscroller.js')}}"></script>
+<script src="{{asset('backoffice/vendor/magnific-popup/jquery.magnific-popup.js')}}"></script>
+<script src="{{asset('backoffice/vendor/jquery-placeholder/jquery.placeholder.js')}}"></script>
+
+<!-- Specific Page Vendor -->
+<script src="{{asset('backoffice/vendor/jquery-ui/jquery-ui.js')}}"></script>
+<script src="{{asset('backoffice/vendor/jqueryui-touch-punch/jquery.ui.touch-punch.js')}}"></script>
+{{-- <script src="{{asset('backoffice/vendor/jquery-appear/jquery.appear.js')}}"></script>
+<script src="{{asset('backoffice/vendor/jquery.easy-pie-chart/jquery.easypiechart.js')}}"></script>
+<script src="{{asset('backoffice/vendor/flot/jquery.flot.js')}}"></script>
+<script src="{{asset('backoffice/vendor/flot.tooltip/jquery.flot.tooltip.js')}}"></script>
+<script src="{{asset('backoffice/vendor/flot/jquery.flot.pie.js')}}"></script>
+<script src="{{asset('backoffice/vendor/flot/jquery.flot.categories.js')}}"></script>
+<script src="{{asset('backoffice/vendor/flot/jquery.flot.resize.js')}}"></script>
+<script src="{{asset('backoffice/vendor/jquery-sparkline/jquery.sparkline.js')}}"></script>
+<script src="{{asset('backoffice/vendor/raphael/raphael.js')}}"></script>
+<script src="{{asset('backoffice/vendor/morris/morris.js')}}"></script>
+<script src="{{asset('backoffice/vendor/gauge/gauge.js')}}"></script>
+<script src="{{asset('backoffice/vendor/snap.svg/snap.svg.js')}}"></script>
+<script src="{{asset('backoffice/vendor/liquid-meter/liquid.meter.js')}}"></script> --}}
+<script src="{{asset('backoffice/vendor/datatables/media/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/datatables/media/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js')}}"></script>
+
+<script src="{{asset('backoffice/vendor/parsleyjs/parsley.min.js')}}"></script>
+<script src="{{asset('backoffice/vendor/sweetalert2/sweetalert2.min.js')}}"></script>
+{{-- <script src="{{asset('backoffice/vendor/summernote/summernote-bs4.min.js')}}"></script> --}}
+{{-- <script src="{{asset('backoffice/vendor/select2/js/select2.min.js')}}"></script> --}}
+<script src="{{asset('backoffice/vendor/select2/js/select2.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-multiselect/js/bootstrap-multiselect.js')}}"></script>
+<script src="{{asset('backoffice/vendor/jquery-maskedinput/jquery.maskedinput.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-timepicker/js/bootstrap-timepicker.js')}}"></script>
+<script src="{{asset('backoffice/vendor/fuelux/js/spinner.js')}}"></script>
+<script src="{{asset('backoffice/vendor/dropzone/dropzone.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-markdown/js/markdown.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-markdown/js/to-markdown.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-markdown/js/bootstrap-markdown.js')}}"></script>
+<script src="{{asset('backoffice/vendor/codemirror/lib/codemirror.js')}}"></script>
+<script src="{{asset('backoffice/vendor/codemirror/addon/selection/active-line.js')}}"></script>
+<script src="{{asset('backoffice/vendor/codemirror/addon/edit/matchbrackets.js')}}"></script>
+<script src="{{asset('backoffice/vendor/codemirror/mode/javascript/javascript.js')}}"></script>
+<script src="{{asset('backoffice/vendor/codemirror/mode/xml/xml.js')}}"></script>
+<script src="{{asset('backoffice/vendor/codemirror/mode/htmlmixed/htmlmixed.js')}}"></script>
+<script src="{{asset('backoffice/vendor/codemirror/mode/css/css.js')}}"></script>
+<script src="{{asset('backoffice/vendor/summernote/summernote-bs4.js')}}"></script>
+<script src="{{asset('backoffice/vendor/bootstrap-maxlength/bootstrap-maxlength.js')}}"></script>
+<script src="{{asset('backoffice/vendor/ios7-switch/ios7-switch.js')}}"></script>
+
+{{-- <script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script> --}}
+
+
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="{{asset('backoffice/js/theme.js')}}"></script>
+
+<!-- Theme Custom -->
+<script src="{{asset('backoffice/js/custom.js')}}"></script>
+
+<!-- Theme Initialization Files -->
+<script src="{{asset('backoffice/js/theme.init.js')}}"></script>
+
+<!-- Examples -->
+<script src="{{asset('backoffice/js/examples/examples.dashboard.js')}}"></script>
+<script src="{{asset('backoffice/js/examples/examples.advanced.form.js')}}"></script>
+
+

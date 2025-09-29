@@ -1,0 +1,8 @@
+@include('layouts.backoffice.header')
+@yield('content')
+</div>
+</section>
+@include('layouts.backoffice.footer')
+@yield('scriptjs')
+</body>
+</html>

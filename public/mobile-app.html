@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paksayur - Mobile App</title>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- React CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <style>
+        /* Mobile Homepage CSS - Exact replica of the reference image */
+        :root {
+            /* Adjustable spacing & sizing tokens for categories */
+            --cat-gap-row-one: 4px;          /* horizontal gap one-row (lebih rapat) */
+            --cat-gap-col-one: 6px;          /* vertical gap one-row */
+            --cat-gap-row-two: 8px;          /* horizontal gap two-rows */
+            --cat-gap-col-two: 10px;         /* vertical gap two-rows */
+            --cat-icon-size-one: 48px;       /* icon diameter one-row (lebih kecil) */
+            --cat-icon-size-two: 58px;       /* icon diameter two-rows */
+            --cat-item-width-one: 60px;      /* category item width one-row (lebih sempit) */
+            --cat-item-width-two: 75px;      /* category item width two-rows */
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .mobile-homepage {
+            max-width: 375px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Header Styles - No Background */
+        .app-header {
+            background: none;
+            color: white;
+            padding: 12px 16px 16px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 8px 16px;
+        }
+
+        .location-section {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .location-icon {
+            font-size: 16px;
+            margin-right: 8px;
+        }
+
+        .location-text {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .location-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .delivery-time {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .dropdown-icon {
+            font-size: 12px;
+            margin-left: 8px;
+            opacity: 0.8;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .favorite-icon {
+            font-size: 20px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Search Section */
+        .search-section {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* Sticky Search Header */
+        .search-sticky {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 10px 16px;
+            z-index: 200;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 15px 15px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%);
+            }
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+        .search-sticky .search-container {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #666;
+            z-index: 2;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: none;
+            border-radius: 25px;
+            background: transparent;
+            font-size: 14px;
+            outline: none;
+            color: #333;
+        }
+
+        .search-input::placeholder {
+            color: #666;
+        }
+
+        /* Main Banner Swiper */
+        .main-banner { position: relative; width: 100%; height: 250px; margin:0; overflow:hidden; background:#f8f9fa; }
+        .main-banner .swiper { width:100%; height:100%; }
+        .main-banner .swiper-wrapper { width:100%; height:100%; }
+        .main-banner .swiper-slide { position:relative; width:100%; height:100%; background-size:cover; background-position:center; }
+        .main-banner .swiper-slide.default-banner { background: linear-gradient(135deg, #fd79a8, #fdcb6e); }
+        .main-banner .banner-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.25); z-index:1; }
+        .main-banner .banner-content { position:absolute; inset:0; display:flex; justify-content:space-between; align-items:center; padding:20px; z-index:2; }
+    .main-banner .banner-img-tag { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+        .main-banner .swiper-pagination { bottom: 12px !important; }
+        .main-banner .swiper-pagination-bullet { background: rgba(255,255,255,0.5); opacity:1; }
+        .main-banner .swiper-pagination-bullet-active { background:#fff; }
+        .main-banner .swiper-button-prev, .main-banner .swiper-button-next { color:#fff; width:32px; height:32px; }
+        .main-banner .swiper-button-prev:after, .main-banner .swiper-button-next:after { font-size:20px; }
+
+        .banner-text {
+            flex: 1;
+            color: white;
+        }
+
+        .promo-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .banner-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+        }
+
+        .discount-amount {
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0 0 8px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .promo-code {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .banner-image {
+            flex-shrink: 0;
+            margin-left: 16px;
+            width: 120px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        /* Remove old manual dots/nav styles */
+
+        /* Categories Section */
+        .categories-section {
+            background: white;
+            margin: 15px 16px;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .categories-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        /* Removed old .categories-container scroll-snap (now using Swiper) */
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: var(--cat-item-width-two);
+        }
+        .swiper-slide.one-row .category-item { width: var(--cat-item-width-one); }
+
+        .category-item:hover { transform: translateY(-2px); }
+
+        .category-icon {
+            width: var(--cat-icon-size-two);
+            height: var(--cat-icon-size-two);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef2ef;
+            font-size: 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border: 2px solid #f8f9fa;
+            overflow: hidden;
+        }
+        .swiper-slide.one-row .category-icon { width: var(--cat-icon-size-one); height: var(--cat-icon-size-one); font-size: 20px; }
+
+    /* Swiper categories */
+    .categories-swiper { width: 100%; }
+    .categories-swiper .swiper { width:100%; overflow:hidden; }
+        .categories-swiper .swiper-slide { display: grid; }
+    .categories-swiper .swiper-slide.one-row { grid-template-columns: repeat(5, 1fr); grid-auto-rows: auto; gap: var(--cat-gap-col-one) var(--cat-gap-row-one); }
+    .categories-swiper .swiper-slide.two-rows { grid-template-columns: repeat(5, 1fr); grid-auto-rows: auto; gap: var(--cat-gap-col-two) var(--cat-gap-row-two); }
+    .categories-swiper .swiper-slide.one-row .category-item { margin-bottom: 2px; }
+        .categories-swiper .swiper-pagination { position: relative; margin-top: 14px; }
+        .categories-swiper .swiper-pagination-bullet { background: #cfd8cf; opacity: 1; width: 7px; height:7px; }
+        .categories-swiper .swiper-pagination-bullet-active { background: #017a2d; width: 18px; border-radius: 8px; transition: all .3s; }
+
+        .category-name {
+            font-size: 10px;
+            font-weight: 500;
+            color: #333;
+            line-height: 1.15;
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        /* One-row mode: izinkan 2 baris teks agar mirip contoh */
+        .swiper-slide.one-row .category-name {
+            white-space: normal;
+            display: -webkit-box;
+            line-clamp: 2; /* standard */
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        /* Promo Cards Section */
+        .promo-section {
+            padding: 0 16px 20px;
+        }
+
+        .promo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .promo-card {
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .promo-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .promo-text {
+            flex: 1;
+            color: white;
+        }
+
+        .promo-text h3 {
+            font-size: 12px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .promo-text p {
+            font-size: 10px;
+            margin: 0;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .promo-image {
+            flex-shrink: 0;
+            margin-left: 8px;
+            width: 60px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        /* Discount Banner */
+        .discount-banner {
+            margin: 0 16px 20px;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .discount-content {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .discount-icon {
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .discount-text {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* Products Section */
+        .products-section { padding: 0 16px 90px; }
+        .products-title { font-size:16px; font-weight:700; color:#333; margin:0 0 12px 0; }
+        .products-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px 12px; }
+        .product-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); display:flex; flex-direction:column; position:relative; }
+        .product-media { width:100%; aspect-ratio:1/1; background:#f1f3f4; position:relative; overflow:hidden; }
+        .product-media img, .product-media video { width:100%; height:100%; object-fit:cover; display:block; }
+        .product-media video { background:#000; }
+        .product-body { padding:10px 10px 12px; display:flex; flex-direction:column; flex:1; }
+    .product-name { font-size:13px; font-weight:600; line-height:1.25; margin:0 0 4px 0; color:#222; height:2.5em; overflow:hidden; display:-webkit-box; line-clamp:2; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+        .product-sub { font-size:10px; color:#555; margin:0 0 4px 0; line-height:1.2; }
+        .product-size { font-size:10px; color:#777; margin:0 0 8px 0; }
+        .price-row { margin-top:auto; display:flex; align-items:center; flex-wrap:wrap; gap:4px; }
+        .price-current { font-size:13px; font-weight:700; color:#ff7a00; }
+        .price-old { font-size:11px; text-decoration:line-through; color:#b0b4b6; font-weight:500; }
+        .discount-badge { position:absolute; top:8px; left:8px; background:#ff5757; color:#fff; font-size:10px; font-weight:600; padding:2px 6px; border-radius:6px; }
+    .add-btn, .qty-box { position:absolute; right:8px; bottom:8px; }
+    .add-btn { width:30px; height:30px; border-radius:50%; background:#1d7a35; color:#fff; border:none; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.15); transition:transform .15s; }
+    .add-btn:active { transform:scale(.9); }
+    .qty-box { background:#fff; border:1px solid #dfe4e6; border-radius:26px; height:32px; display:flex; align-items:center; gap:10px; padding:0 10px; font-size:13px; font-weight:600; color:#222; box-shadow:0 2px 5px rgba(0,0,0,0.07); }
+    .qty-btn { background:none; border:none; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; line-height:1; color:#1d7a35; }
+        .qty-btn:active { background:#eef6f0; }
+        .infinite-loader { text-align:center; padding:18px 0 50px; font-size:12px; color:#666; }
+    .scroll-top-btn { position:fixed; right:16px; bottom:82px; width:40px; height:40px; border:none; background:rgba(255,255,255,0.78); color:#1d7a35; font-weight:600; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,0.15); display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; z-index:1200; opacity:0; pointer-events:none; transform:translateY(8px) scale(.85); transition:opacity .25s, transform .28s cubic-bezier(.2,.8,.3,1), background .25s; border:1px solid rgba(0,0,0,0.06); }
+    .scroll-top-btn svg { width:18px; height:18px; stroke-width:2.1; stroke:currentColor; fill:none; }
+    .scroll-top-btn.visible { opacity:1; pointer-events:auto; transform:translateY(0) scale(1); }
+    .scroll-top-btn:active { transform:translateY(2px) scale(.92); }
+    .scroll-top-btn.deep { box-shadow:0 4px 16px rgba(0,0,0,0.18),0 0 0 4px rgba(29,122,53,0.12); }
+    @media (min-width: 376px) { .scroll-top-btn { right: calc((100vw - 375px)/2 + 16px); } }
+        /* Shimmer skeleton (reuse earlier animation if exists) */
+        @keyframes productShimmer { 0% {background-position:-300px 0} 100% {background-position:300px 0} }
+        .skeleton-block { background:#eceff1; background-image:linear-gradient(90deg,#eceff1 0,#f5f7f8 40%,#eceff1 80%); background-size:600px 100%; animation:productShimmer 1.3s infinite linear; border-radius:8px; }
+        .skeleton-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+        .skeleton-media { aspect-ratio:1/1; }
+        .skeleton-lines { padding:10px 10px 14px; }
+        .skeleton-line { height:10px; margin-top:6px; border-radius:4px; }
+
+        /* Bottom Navigation */
+        .bottom-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 0;
+            border-top: 1px solid #e9ecef;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: color 0.3s;
+            position: relative;
+            min-width: 60px;
+        }
+
+        .nav-item.active {
+            color: #00b894;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -4px;
+            right: 12px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* Mobile responsive */
+        @media (min-width: 376px) {
+            body {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 20px 0;
+            }
+        }
+        /* Product Detail Sheet */
+        .detail-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.45); backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); z-index:2000; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; opacity:0; pointer-events:none; transition:opacity .25s; }
+        .detail-overlay.open { opacity:1; pointer-events:auto; }
+        .detail-sheet { width:100%; max-width:375px; background:#fff; border-radius:18px 18px 0 0; max-height:100%; display:flex; flex-direction:column; position:relative; box-shadow:0 -4px 20px rgba(0,0,0,0.25); transform:translateY(40px); opacity:0; transition:transform .35s cubic-bezier(.25,.8,.3,1), opacity .3s; }
+        .detail-overlay.open .detail-sheet { transform:translateY(0); opacity:1; }
+                /* Fallback utility bar (close/share) */
+                .detail-utility-bar { position:sticky; top:0; left:0; right:0; z-index:1200; display:flex; align-items:center; gap:8px; padding:6px 10px; background:rgba(255,255,255,0.85); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border-bottom:1px solid rgba(0,0,0,0.06); min-height:42px; }
+                .detail-utility-bar .util-btn { background:#fff; border:1px solid #e3e3e3; border-radius:8px; padding:6px 10px; font-size:14px; line-height:1; display:flex; align-items:center; gap:4px; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+                .detail-utility-bar .util-btn:active { transform:scale(.94); }
+                .detail-utility-bar .util-spacer { flex:1; }
+                .detail-utility-bar.hide-when-overlay-btn-ok { display:none; }
+                @media (prefers-color-scheme: dark){
+                    .detail-utility-bar { background:rgba(20,20,20,0.82); border-color:rgba(255,255,255,0.08); }
+                    .detail-utility-bar .util-btn { background:#1e1e1e; color:#eee; border-color:#333; }
+                }
+        .detail-media-wrapper { position:relative; width:100%; aspect-ratio: 1/1; background:#000; overflow:hidden; }
+        .detail-media-wrapper .swiper { width:100%; height:100%; }
+        .detail-media-wrapper img, .detail-media-wrapper video { width:100%; height:100%; object-fit:cover; display:block; }
+        .detail-media-pagination { position:absolute; right:8px; bottom:8px; background:rgba(0,0,0,0.35); color:#fff; font-size:11px; padding:4px 8px; border-radius:12px; backdrop-filter:blur(4px); }
+        /* Detail media swiper bullets (pagination) */
+        .detail-media-wrapper .swiper-pagination { bottom:10px !important; left:50%; transform:translateX(-50%); width:auto !important; background:rgba(0,0,0,0.35); padding:4px 10px; border-radius:16px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); display:flex; gap:6px; }
+        .detail-media-wrapper .swiper-pagination-bullet { width:7px; height:7px; background:rgba(255,255,255,0.55); opacity:1; margin:0 !important; transition:all .3s; }
+        .detail-media-wrapper .swiper-pagination-bullet-active { background:#fff; width:18px; border-radius:8px; }
+    .detail-close-btn { position:absolute; top:6px; left:10px; width:36px; height:36px; border:none; background:rgba(0,0,0,0.55); color:#fff; display:flex; align-items:center; justify-content:center; border-radius:50%; cursor:pointer; font-size:18px; box-shadow:0 2px 8px rgba(0,0,0,0.35); z-index:40; font-weight:600; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.35); }
+    .detail-close-btn.right { left:auto; right:10px; }
+        .detail-share-btn { position:absolute; top:6px; right:56px; width:36px; height:36px; border:none; background:rgba(0,0,0,0.45); color:#fff; display:flex; align-items:center; justify-content:center; border-radius:50%; cursor:pointer; font-size:18px; box-shadow:0 2px 8px rgba(0,0,0,0.3); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.3); }
+        .detail-tabs { display:flex; align-items:center; justify-content:space-around; background:linear-gradient(180deg,#f6f9f3,#fff); border-bottom:1px solid #eceff1; position:sticky; top:0; z-index:10; padding:4px 0 0; }
+        .detail-tab { flex:1; text-align:center; font-size:13px; font-weight:600; padding:10px 0 9px; position:relative; cursor:pointer; color:#4d5b52; }
+        .detail-tab.active { color:#1d7a35; }
+        .detail-tab.active:after { content:''; position:absolute; left:25%; right:25%; bottom:0; height:3px; background:#1d7a35; border-radius:2px; }
+        .detail-content-scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; background:#fff; }
+        .detail-section { padding:14px 16px 18px; }
+        .detail-price-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+        .detail-price-current { font-size:20px; font-weight:700; color:#ff7a00; }
+        .detail-price-old { font-size:14px; color:#b0b4b6; text-decoration:line-through; }
+        .detail-discount-badge { background:#ff5757; color:#fff; font-size:11px; padding:3px 6px; border-radius:6px; font-weight:600; }
+        .detail-title { font-size:16px; font-weight:700; line-height:1.3; margin:4px 0 8px; color:#222; }
+        .detail-sub { font-size:12px; color:#4e5558; margin-bottom:12px; line-height:1.35; }
+        .spec-grid { display:grid; grid-template-columns:repeat(2,1fr); border:1px solid #eceff1; border-radius:10px; overflow:hidden; margin:12px 0 4px; }
+        .spec-item { padding:10px 12px; border-bottom:1px solid #eceff1; border-right:1px solid #eceff1; background:#fafcfa; }
+        .spec-item:nth-child(2n) { border-right:none; }
+        .spec-item:last-child, .spec-item:nth-last-child(2) { border-bottom:none; }
+        .spec-label { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#6d7470; font-weight:600; margin-bottom:4px; }
+        .spec-value { font-size:12px; font-weight:600; color:#222; }
+        .detail-brochure { border-radius:12px; overflow:hidden; margin:16px 0 8px; background:#f1f3f4; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; font-size:14px; color:#999; font-weight:500; position:relative; }
+        .detail-related-title { font-size:14px; font-weight:700; margin:4px 0 10px; }
+        .related-scroll { display:flex; overflow-x:auto; gap:12px; padding:2px 2px 4px; scrollbar-width:none; }
+        .related-scroll::-webkit-scrollbar { display:none; }
+        .related-card { flex:0 0 120px; background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); overflow:hidden; display:flex; flex-direction:column; position:relative; }
+        .related-card img { width:100%; height:90px; object-fit:cover; }
+        .related-card .rc-body { padding:8px 8px 10px; }
+    .related-card h5 { font-size:11px; font-weight:600; margin:0 0 4px; line-height:1.25; height:2.2em; overflow:hidden; display:-webkit-box; line-clamp:2; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+        .related-card .rc-price { font-size:11px; font-weight:700; color:#ff7a00; }
+    .detail-bottom-bar { position:sticky; bottom:0; background:#ffffffee; backdrop-filter:blur(6px); padding:10px 14px env(safe-area-inset-bottom); box-shadow:0 -4px 15px -4px rgba(0,0,0,0.15); display:flex; align-items:center; gap:12px; }
+    .detail-bottom-bar .action-left { display:flex; align-items:center; gap:10px; }
+    .detail-icon-btn { width:42px; height:42px; border-radius:14px; border:1px solid #d7dcdf; background:#fff; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; position:relative; }
+    .detail-icon-btn:active { background:#f0f4f2; }
+    .detail-icon-btn .badge { position:absolute; top:4px; right:4px; background:#ff5757; color:#fff; font-size:10px; padding:2px 5px; border-radius:10px; font-weight:600; }
+    .detail-bottom-flex { flex:1; display:flex; align-items:center; gap:12px; justify-content:flex-end; }
+    .detail-brochure-wrapper { margin:18px -16px 0; }
+    .detail-brochure-wrapper img { width:100%; display:block; border-radius:0; object-fit:cover; }
+    .detail-brochure-title { padding:0 16px; font-size:14px; font-weight:700; margin:20px 0 10px; }
+        .detail-cart-btn { flex:1; background:#1d7a35; color:#fff; border:none; border-radius:14px; font-size:14px; font-weight:600; padding:14px 18px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+        .detail-qty-inline { display:flex; align-items:center; gap:10px; }
+        .detail-inline-btn { width:34px; height:34px; border-radius:50%; border:1px solid #d7dcdf; background:#fff; display:flex; align-items:center; justify-content:center; font-size:18px; color:#1d7a35; cursor:pointer; }
+        .detail-inline-btn:active { background:#eef6f0; }
+        .no-scroll { overflow:hidden; }
+        .detail-empty { padding:20px; text-align:center; font-size:13px; color:#666; }
+        .detail-divider { height:8px; background:linear-gradient(90deg,#f3f6f2,#f5f7f5); margin:4px -16px 16px; }
+        .detail-section h4 { font-size:14px; font-weight:700; margin:0 0 10px; }
+        .detail-desc { font-size:12px; line-height:1.5; color:#333; white-space:pre-line; }
+        .detail-media-wrapper .swiper-pagination-bullet { background:rgba(255,255,255,.5); opacity:1; }
+        .detail-media-wrapper .swiper-pagination-bullet-active { background:#fff; }
+        .detail-media-wrapper video { background:#000; }
+    /* Rich spec HTML styling */
+    .detail-spec-html { color:#2b2f30; }
+    .detail-spec-html p { margin:6px 0 10px; }
+    .detail-spec-html ul, .detail-spec-html ol { margin:6px 0 12px 16px; padding:0; }
+    .detail-spec-html li { margin:4px 0; line-height:1.4; }
+    .detail-spec-html ul { list-style: disc; }
+    .detail-spec-html ol { list-style: decimal; }
+    .detail-spec-html table { width:100%; border-collapse:collapse; margin:10px 0 14px; font-size:12px; }
+    .detail-spec-html table th { background:#f3f6f2; font-weight:600; }
+    .detail-spec-html table th, .detail-spec-html table td { border:1px solid #dfe3e5; padding:6px 8px; text-align:left; }
+    .detail-spec-html a { color:#1d7a35; text-decoration:none; border-bottom:1px solid rgba(29,122,53,0.35); }
+    .detail-spec-html a:hover { color:#145224; }
+    .detail-spec-html strong { font-weight:600; }
+    .detail-spec-html h1, .detail-spec-html h2, .detail-spec-html h3, .detail-spec-html h4, .detail-spec-html h5 { line-height:1.3; margin:12px 0 8px; font-weight:600; }
+    .detail-spec-html h4, .detail-spec-html h5 { font-size:13px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    const MobileHomepage = () => {
+            const [selectedLocation, setSelectedLocation] = useState('Dikirim ke Cirendeu');
+            const [searchQuery, setSearchQuery] = useState('');
+            const [activeTab, setActiveTab] = useState('home');
+            const [banners, setBanners] = useState([]);
+            const [currentBannerIndex, setCurrentBannerIndex] = useState(0); // kept for now if needed elsewhere
+            const bannerSwiperRef = useRef(null);
+            const [categories, setCategories] = useState([]);
+            const categoriesSwiperRef = useRef(null);
+            // Products & cart state
+            const [products, setProducts] = useState([]);
+            const [productPage, setProductPage] = useState(1);
+            const [productHasMore, setProductHasMore] = useState(true);
+            const [loadingProducts, setLoadingProducts] = useState(false);
+            const [initialProductsLoading, setInitialProductsLoading] = useState(true);
+            const [cart, setCart] = useState(()=>{
+                try {
+                    const raw = localStorage.getItem('pk_cart');
+                    if (raw) return JSON.parse(raw);
+                } catch(_){}
+                return {};
+            }); // {id: qty}
+            const loadMoreRef = useRef(null);
+            const scrollTopBtnRef = useRef(null);
+
+            // Detail modal state
+            const [detailOpen, setDetailOpen] = useState(false);
+            const [detailProduct, setDetailProduct] = useState(null); // enriched product data
+            const [detailActiveTab, setDetailActiveTab] = useState('produk'); // 'produk' | 'detail'
+            const detailScrollRef = useRef(null);
+            const detailMediaSwiperRef = useRef(null); // DOM node of swiper
+            const detailSwiperInstanceRef = useRef(null);
+            const detailProdukSectionRef = useRef(null);
+            const detailSpecSectionRef = useRef(null);
+
+            // Open detail handler (attempt fetch detail API, fallback to existing fields)
+            const pendingScrollTargetRef = useRef(null);
+            const openDetail = (p, opts={}) => {
+                let cancelled = false;
+                // Start with base object from list item
+                const base = { ...p };
+                base.media_list = [];
+                if (p.media) {
+                    const normalizeUrl = (u)=> u && !u.startsWith('http') && !u.startsWith('/') ? ('/frontend/'+u.replace(/^frontend\//,'')) : u;
+                    base.media_list.push({ type: p.media_type || (p.media.match(/\.mp4($|\?)/) ? 'video':'image'), url: normalizeUrl(p.media) });
+                }
+                base.specs = [
+                    { label: 'Berat', value: p.size || '–' },
+                    { label: 'Kategori', value: p.category_name || 'Umum' },
+                    { label: 'Stok', value: (p.stock ?? 'Tersedia') },
+                    { label: 'Asal', value: p.origin || 'Lokal' },
+                ];
+                base.description = p.description || 'Produk segar berkualitas. Deskripsi lengkap akan tampil di sini.';
+                base.brochure_image = null; // placeholder; could be an URL
+                setDetailProduct(base);
+                setDetailActiveTab('produk');
+                setDetailOpen(true);
+                if (opts.target === 'spec') {
+                    pendingScrollTargetRef.current = 'spec';
+                }
+
+                // Try fetch detail endpoint if exists
+                fetch(`/api/v1/products/${p.id}`)
+                    .then(r => r.ok ? r.json() : Promise.reject('not ok'))
+                    .then(data => {
+                        if (cancelled || !data) return;
+                        // Expect structure maybe {data:{...}} or flat
+                        const d = data.data || data;
+                        if (!d) return;
+                        const enriched = { ...base };
+                        // Media gallery if provided
+                        if (Array.isArray(d.media_list) && d.media_list.length) {
+                            const norm = (u)=> u && !u.startsWith('http') && !u.startsWith('/') ? ('/frontend/'+u.replace(/^frontend\//,'')) : u;
+                            enriched.media_list = d.media_list.map(m => ({ type: m.type || 'image', url: norm(m.url || m.path || m) }));
+                        }
+                        if (d.description) enriched.description = d.description;
+                        if (Array.isArray(d.specs) && d.specs.length) enriched.specs = d.specs;
+                        if (d.brochure_image) {
+                            const norm = (u)=> u && !u.startsWith('http') && !u.startsWith('/') ? ('/frontend/'+u.replace(/^frontend\//,'')) : u;
+                            enriched.brochure_image = norm(d.brochure_image);
+                        }
+                        if (d.spec_html) { enriched.spec_html = d.spec_html; enriched.specs = []; }
+                        setDetailProduct(enriched); // update
+                    })
+                    .catch(()=>{})
+                    .finally(()=>{ cancelled = true; });
+            };
+
+            const closeDetail = () => {
+                setDetailOpen(false);
+                setTimeout(()=>{
+                    setDetailProduct(null);
+                    // Destroy swiper if exists
+                    if (detailSwiperInstanceRef.current) {
+                        try { detailSwiperInstanceRef.current.destroy(true,true); } catch(_) {}
+                        detailSwiperInstanceRef.current = null;
+                    }
+                }, 300);
+            };
+
+            // Small helper to normalize API envelope {success,data,meta,...} or raw arrays
+            const extractDataArray = (payload) => {
+                if (!payload) return [];
+                if (Array.isArray(payload)) return payload; // legacy/raw
+                if (Array.isArray(payload.data)) return payload.data; // standardized envelope
+                return [];
+            };
+
+            // Fetch banners and categories on component mount (versioned + envelope aware)
+            useEffect(() => {
+                // Fetch banners (must use versioned endpoint now)
+                fetch('/api/v1/banners')
+                    .then(r => r.ok ? r.json() : Promise.reject(r))
+                    .then(json => {
+                        const arr = extractDataArray(json);
+                        if (arr.length > 0) {
+                            setBanners(arr.map(b => ({
+                                ...b,
+                                image: b.image || b.url || b.path || b.media || null
+                            })));
+                        } else {
+                            setBanners([{ id: 'default', name: 'DISKON HINGGA 75RB', image: null, isDefault: true }]);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error fetching banners (v1):', err);
+                        setBanners([{ id: 'default', name: 'DISKON HINGGA 75RB', image: null, isDefault: true }]);
+                    });
+
+                // Fetch categories (adjust for envelope)
+                fetch('/api/v1/categories')
+                    .then(r => r.ok ? r.json() : Promise.reject(r))
+                    .then(json => {
+                        const arr = extractDataArray(json);
+                        if (arr.length > 0) setCategories(arr);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching categories:', error);
+                        const fallback = [
+                            { id: 1, name: 'Sayuran', icon: '🥗', color: '#96CEB4' },
+                            { id: 2, name: 'Buah', icon: '🍎', color: '#FF6B6B' },
+                            { id: 3, name: 'Daging', icon: '🥩', color: '#FF8E53' },
+                            { id: 4, name: 'Seafood', icon: '🐟', color: '#81ECEC' }
+                        ];
+                        setCategories(fallback);
+                    });
+            }, []);
+
+            // Initialize Swiper for categories when data loaded
+            useEffect(() => {
+                if (!categories.length) return; // wait for data
+                if (!window.Swiper) {
+                    console.warn('Swiper global not found yet');
+                    return;
+                }
+                const containerEl = categoriesSwiperRef.current;
+                if (!containerEl) return;
+
+                if (containerEl.__swiperInstance) {
+                    try { containerEl.__swiperInstance.destroy(true, true); } catch (_) {}
+                }
+
+                const init = () => {
+                    try {
+                        const slidesCount = containerEl.querySelectorAll('.swiper-slide').length;
+                        const instance = new Swiper(containerEl, {
+                            pagination: {
+                                el: containerEl.querySelector('.swiper-pagination'),
+                                clickable: true,
+                            },
+                            slidesPerView: 1,
+                            speed: 420,
+                            spaceBetween: 8,
+                            allowTouchMove: true, // selalu bisa gesture
+                            grabCursor: true,
+                            resistanceRatio: 0.65,
+                            touchStartPreventDefault: false,
+                            loop: slidesCount > 1, // loop kategori hanya jika lebih dari 1 halaman
+                            observer: true,
+                            observeParents: true,
+                        });
+                        containerEl.__swiperInstance = instance;
+                        console.log('Categories Swiper initialized: total slides', slidesCount);
+                        // Hide pagination if only one slide
+                        const pag = containerEl.querySelector('.swiper-pagination');
+                        if (pag) {
+                            if (slidesCount <= 1) pag.style.display = 'none'; else pag.style.display = '';
+                        }
+                        // Force recalculation after paint
+                        setTimeout(() => { try { instance.update(); } catch(_){} }, 60);
+                    } catch (err) {
+                        console.error('Failed to init Swiper:', err);
+                    }
+                };
+
+                // Delay to ensure React painted DOM
+                setTimeout(init, 0);
+            }, [categories]);
+
+            // Initialize Swiper for banners
+            useEffect(() => {
+                if (!banners.length) return;
+                if (!window.Swiper) return;
+                const container = bannerSwiperRef.current;
+                if (!container) return;
+                if (container.__swiperInstance) {
+                    try { container.__swiperInstance.destroy(true,true);} catch(_){}
+                }
+                const instance = new Swiper(container, {
+                    loop: banners.length > 1,
+                    pagination: { el: container.querySelector('.swiper-pagination'), clickable: true },
+                    autoplay: banners.length > 1 ? { delay: 5000, disableOnInteraction: false } : false,
+                    speed: 550,
+                    effect: 'slide',
+                    grabCursor: true,
+                });
+                container.__swiperInstance = instance;
+            }, [banners]);
+
+            // Old manual banner logic removed (now handled by Swiper)
+
+            // Handle scroll for sticky search
+            useEffect(() => {
+                const handleScroll = () => {
+                    const searchSection = document.querySelector('.search-section');
+                    const scrollPosition = window.scrollY;
+
+                    if (scrollPosition > 150) { // Show sticky search after scrolling past banner
+                        searchSection?.classList.add('search-sticky');
+                    } else {
+                        searchSection?.classList.remove('search-sticky');
+                    }
+                    // scroll-top delay handled separately
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            // Delayed show logic for scroll-top button
+            useEffect(()=>{
+                const btn = scrollTopBtnRef.current;
+                if (!btn) return;
+                let timer = null;
+                const onScroll = () => {
+                    const doc = document.documentElement;
+                    const y = window.scrollY || doc.scrollTop;
+                    const viewport = window.innerHeight;
+                    const full = doc.scrollHeight;
+                    const distanceToBottom = full - (y + viewport);
+                    if (timer) clearTimeout(timer);
+
+                    // Near bottom (misal < 600px dari dasar) => tampil instan tanpa delay
+                    if (distanceToBottom < 600 && y > 500) {
+                        btn.classList.add('visible');
+                        if (y > 1400) btn.classList.add('deep'); else btn.classList.remove('deep');
+                        return; // skip delayed logic
+                    }
+
+                    // Sembunyikan sementara saat user masih menggerakkan
+                    btn.classList.remove('visible');
+                    btn.classList.remove('deep');
+
+                    // Dynamic delay: makin jauh scroll makin pendek delay
+                    let baseDelay = 220;
+                    if (y > 1200) baseDelay = 140;
+                    if (y > 1800) baseDelay = 90;
+
+                    timer = setTimeout(()=>{
+                        if (y > 600) {
+                            btn.classList.add('visible');
+                            if (y > 1500) btn.classList.add('deep');
+                        }
+                    }, baseDelay);
+                };
+                window.addEventListener('scroll', onScroll, { passive:true });
+                return () => { window.removeEventListener('scroll', onScroll); if (timer) clearTimeout(timer); };
+            }, []);
+
+            // ----- Products fetching & infinite scroll -----
+            const fetchProducts = (page=1) => {
+                if (loadingProducts || !productHasMore) return;
+                setLoadingProducts(true);
+                fetch(`/api/v1/products?page=${page}&per_page=6`)
+                    .then(res => res.ok ? res.json() : Promise.reject('status'))
+                    .then(json => {
+                        const items = extractDataArray(json);
+                        // Support meta pagination if provided
+                        const meta = json.meta || {};
+                        const hasMore = typeof meta.has_more !== 'undefined'
+                            ? !!meta.has_more
+                            : (json.next_page !== false && items.length > 0);
+                        setProducts(prev => [...prev, ...items]);
+                        setProductHasMore(hasMore);
+                        setProductPage(page);
+                    })
+                    .catch(err => {
+                        console.warn('Gagal fetch products', err);
+                        setProductHasMore(false);
+                    })
+                    .finally(()=>{
+                        setLoadingProducts(false);
+                        setInitialProductsLoading(false);
+                    });
+            };
+
+            useEffect(()=>{ fetchProducts(1); }, []);
+
+            // Infinite scroll observer
+            useEffect(()=>{
+                const sentinel = loadMoreRef.current;
+                if (!sentinel || !('IntersectionObserver' in window)) return;
+                const io = new IntersectionObserver(entries => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            if (productHasMore) fetchProducts(productPage+1);
+                        }
+                    })
+                }, { rootMargin: '250px 0px 0px 0px' });
+                io.observe(sentinel);
+                return () => io.disconnect();
+            }, [productHasMore, productPage, loadingProducts]);
+
+            // Video autoplay/pause when in view
+            useEffect(()=>{
+                if (!products.length) return;
+                const vids = Array.from(document.querySelectorAll('.product-media video'));
+                if (!('IntersectionObserver' in window)) {
+                    vids.forEach(v=>{ try { v.play(); } catch(_){} });
+                    return;
+                }
+                const vObserver = new IntersectionObserver(entries => {
+                    entries.forEach(en => {
+                        if (en.isIntersecting) {
+                            try { en.target.play(); } catch(_){ }
+                        } else {
+                            try { en.target.pause(); } catch(_){ }
+                        }
+                    });
+                }, { threshold: 0.5 });
+                vids.forEach(v=>vObserver.observe(v));
+                return () => vObserver.disconnect();
+            }, [products]);
+
+            // Cart logic
+            const incrementProduct = (p) => {
+                setCart(prev => {
+                    const next = { ...prev, [p.id]: (prev[p.id]||0)+1 };
+                    try { localStorage.setItem('pk_cart', JSON.stringify(next)); } catch(_){}
+                    return next;
+                });
+            };
+            const decrementProduct = (p) => {
+                setCart(prev => {
+                    const current = prev[p.id]||0;
+                    let next;
+                    if (current <= 1) { next = {...prev}; delete next[p.id]; }
+                    else { next = { ...prev, [p.id]: current-1 }; }
+                    try { localStorage.setItem('pk_cart', JSON.stringify(next)); } catch(_){}
+                    return next;
+                });
+            };
+            useEffect(()=>{ try { localStorage.setItem('pk_cart', JSON.stringify(cart)); } catch(_){} }, [cart]);
+            const totalCartItems = Object.values(cart).reduce((a,b)=>a+b,0);
+
+            // Body scroll lock when detail open
+            useEffect(()=>{
+                if (detailOpen) {
+                    document.body.classList.add('no-scroll');
+                } else {
+                    document.body.classList.remove('no-scroll');
+                }
+            }, [detailOpen]);
+
+            // Initialize detail media swiper when modal opens & product has media_list
+            useEffect(()=>{
+                if (!detailOpen || !detailProduct) return;
+                if (!window.Swiper) return;
+                const container = detailMediaSwiperRef.current;
+                if (!container) return;
+                // Clean old
+                if (detailSwiperInstanceRef.current) {
+                    try { detailSwiperInstanceRef.current.destroy(true,true); } catch(_){}
+                    detailSwiperInstanceRef.current = null;
+                }
+                const instance = new Swiper(container, {
+                    pagination: { el: container.querySelector('.swiper-pagination'), clickable: true },
+                    loop: detailProduct.media_list.length > 1,
+                    speed: 450,
+                    on: {
+                        slideChange: function() {
+                            // Autoplay active video only
+                            const slides = container.querySelectorAll('.swiper-slide');
+                            slides.forEach((sl,i)=>{
+                                const vid = sl.querySelector('video');
+                                if (vid) {
+                                    if (i === this.realIndex) { try { vid.play(); } catch(_){} } else { try { vid.pause(); } catch(_){} }
+                                }
+                            })
+                        }
+                    }
+                });
+                detailSwiperInstanceRef.current = instance;
+                // Play first video if applicable after small delay
+                setTimeout(()=>{
+                    try {
+                        const activeSlide = container.querySelector('.swiper-slide-active');
+                        const vid = activeSlide && activeSlide.querySelector('video');
+                        if (vid) vid.play();
+                    } catch(_){}
+                }, 80);
+            }, [detailOpen, detailProduct]);
+
+            // Scroll spy for tabs
+            useEffect(()=>{
+                if (!detailOpen) return;
+                const sc = detailScrollRef.current;
+                if (!sc) return;
+                const onScroll = () => {
+                    const prodRect = detailProdukSectionRef.current?.getBoundingClientRect();
+                    const specRect = detailSpecSectionRef.current?.getBoundingClientRect();
+                    const containerTop = sc.getBoundingClientRect().top;
+                    if (prodRect && specRect) {
+                        // Determine which section top is closer to container top
+                        const distProd = Math.abs(prodRect.top - containerTop);
+                        const distSpec = Math.abs(specRect.top - containerTop);
+                        setDetailActiveTab(distProd <= distSpec ? 'produk' : 'detail');
+                    }
+                };
+                sc.addEventListener('scroll', onScroll, { passive:true });
+                return ()=> sc.removeEventListener('scroll', onScroll);
+            }, [detailOpen]);
+
+            const scrollToSection = (tab) => {
+                if (!detailOpen) return;
+                const sc = detailScrollRef.current;
+                if (!sc) return;
+                if (tab === 'produk') {
+                    sc.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    let targetEl = detailSpecSectionRef.current;
+                    if (!targetEl) return;
+                    const top = targetEl.offsetTop;
+                    sc.scrollTo({ top: top - 2, behavior: 'smooth' });
+                }
+                setDetailActiveTab(tab === 'detail' ? 'spec' : tab);
+            };
+
+            // After product detail loaded, perform pending auto-scroll
+            useEffect(()=>{
+                if (!detailOpen) return;
+                if (pendingScrollTargetRef.current && detailProduct) {
+                    const target = pendingScrollTargetRef.current;
+                    pendingScrollTargetRef.current = null;
+                    setTimeout(()=> scrollToSection(target === 'detail' ? 'spec' : target), 120);
+                }
+            }, [detailProduct, detailOpen]);
+
+            // Allow ESC to close
+            useEffect(()=>{
+                if (!detailOpen) return;
+                const handler = (e)=>{ if (e.key === 'Escape') closeDetail(); };
+                window.addEventListener('keydown', handler);
+                return ()=> window.removeEventListener('keydown', handler);
+            }, [detailOpen]);
+
+            return (
+                <div className="mobile-homepage">
+                    {/* Main Banner Slider */}
+                    <section className="main-banner">
+                        <div className="swiper" ref={bannerSwiperRef} id="bannerSwiper">
+                            <div className="swiper-wrapper">
+                                {banners.map((banner) => (
+                                    <div
+                                        key={banner.id}
+                                        className={`swiper-slide ${banner.isDefault ? 'default-banner' : ''}`}
+                                        style={!banner.isDefault ? { background:'#000'} : {}}
+                                    >
+                                        {banner.image && !banner.isDefault && (
+                                            <img src={banner.image} loading="lazy" alt={banner.name || 'Banner'} className="banner-img-tag" />
+                                        )}
+                                        <div className="banner-overlay"></div>
+                                        <div className="banner-content"></div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="swiper-pagination"></div>
+                        </div>
+                    </section>
+
+                    {/* Header - Transparent Overlay */}
+                    <header className="app-header">
+                        <div className="search-section">
+                            <div className="search-container">
+                                <span className="search-icon">🔍</span>
+                                <input
+                                    type="text"
+                                    placeholder="Cari beragam kebutuhan harian"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="search-input"
+                                />
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Categories Section */}
+                    <section className="categories-section">
+                        <h3 className="categories-title">Kategori</h3>
+                        <div className="categories-swiper">
+                            <div className="swiper" id="categoriesSwiper" ref={categoriesSwiperRef}>
+                                <div className="swiper-wrapper">
+                                    {(() => {
+                                        // Rule:
+                                        // - Jika jumlah kategori <= 10: tampilkan dalam 1 baris, pagination per 5 item (5 per slide)
+                                        // - Jika jumlah kategori > 10: gunakan 2 baris (5x2), pagination per 10 item (10 per slide)
+                                        const useTwoRows = categories.length > 10; // asumsi: tepat 10 masih single-row (ubah jika mau 2 row untuk =10)
+                                        const perPage = useTwoRows ? 10 : 5;
+                                        let slides = [];
+                                        for (let i = 0; i < categories.length; i += perPage) {
+                                            const slice = categories.slice(i, i + perPage);
+                                            slides.push(
+                                                <div className={`swiper-slide ${useTwoRows ? 'two-rows' : 'one-row'}`} key={i}>
+                                                    {slice.map(category => (
+                                                        <div
+                                                            key={category.id}
+                                                            className="category-item"
+                                                            onClick={() => window.location.href = '/shop'}
+                                                        >
+                                                            <div
+                                                                className="category-icon"
+                                                                style={{
+                                                                    backgroundColor: category.image ? 'transparent' : category.color
+                                                                }}
+                                                            >
+                                                                {category.image ? (
+                                                                    <img src={category.image} loading="lazy" alt={category.name} style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                                                                ) : (
+                                                                    <span>{category.icon}</span>
+                                                                )}
+                                                            </div>
+                                                            <span className="category-name">{category.name}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            );
+                                        }
+                                        return slides;
+                                    })()}
+                                </div>
+                                <div className="swiper-pagination"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Products Section */}
+                    <section className="products-section">
+                        <h3 className="products-title">Produk Pilihan</h3>
+                        {initialProductsLoading ? (
+                            <div className="products-grid">
+                                {Array.from({length:4}).map((_,i)=>(
+                                    <div key={i} className="skeleton-card">
+                                        <div className="skeleton-block skeleton-media"></div>
+                                        <div className="skeleton-lines">
+                                            <div className="skeleton-block skeleton-line" style={{width:'80%'}}></div>
+                                            <div className="skeleton-block skeleton-line" style={{width:'60%'}}></div>
+                                            <div className="skeleton-block skeleton-line" style={{width:'50%', marginTop:'10px'}}></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="products-grid">
+                                {products.map(p => {
+                                    const qty = cart[p.id]||0;
+                                    const showDiscount = p.discount && p.old_price;
+                                    const priceFmt = (val)=> 'Rp'+val.toLocaleString('id-ID');
+                                    return (
+                                        <div key={p.id} className="product-card">
+                                            {showDiscount && <div className="discount-badge">{p.discount}%</div>}
+                                            <div className="product-media" onClick={()=>openDetail(p)}>
+                                                {p.media_type==='video' ? (
+                                                    <video src={p.media} muted playsInline loop preload="metadata" />
+                                                ) : (
+                                                    <img src={p.media} loading="lazy" alt={p.name} />
+                                                )}
+                                            </div>
+                                            <div className="product-body">
+                                                <h4 className="product-name">{p.name}</h4>
+                                                <p className="product-sub">{p.subtitle}</p>
+                                                <p className="product-size">{p.size}</p>
+                                                <div className="price-row">
+                                                    <span className="price-current">{priceFmt(p.price)}</span>
+                                                    {p.old_price && <span className="price-old">{priceFmt(p.old_price)}</span>}
+                                                </div>
+                                            </div>
+                                            {qty===0 ? (
+                                                <button className="add-btn" onClick={()=>incrementProduct(p)}>+</button>
+                                            ) : (
+                                                <div className="qty-box">
+                                                    <button className="qty-btn" onClick={()=>decrementProduct(p)}>−</button>
+                                                    <span>{qty}</span>
+                                                    <button className="qty-btn" onClick={()=>incrementProduct(p)}>+</button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
+                        <div ref={loadMoreRef} className="infinite-loader">
+                            {productHasMore ? (loadingProducts ? 'Memuat...' : 'Gulir untuk muat lagi') : 'Semua produk sudah ditampilkan'}
+                        </div>
+                    </section>
+
+                    {/* Bottom Navigation */}
+                    <nav className="bottom-navigation">
+                        <div
+                            className={`nav-item ${activeTab === 'home' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('home')}
+                        >
+                            <span className="nav-icon">🏠</span>
+                            <span className="nav-label">Home</span>
+                        </div>
+
+                        <div
+                            className={`nav-item ${activeTab === 'category' ? 'active' : ''}`}
+                            onClick={() => window.location.href = '/shop'}
+                        >
+                            <span className="nav-icon">📱</span>
+                            <span className="nav-label">Kategori</span>
+                        </div>
+
+                        <div
+                            className={`nav-item ${activeTab === 'chat' ? 'active' : ''}`}
+                            onClick={() => window.open('https://wa.me/6281241938647', '_blank')}
+                        >
+                            <span className="nav-icon">🎧</span>
+                            <span className="nav-label">Chat CS</span>
+                        </div>
+
+                        <div
+                            className={`nav-item ${activeTab === 'cart' ? 'active' : ''}`}
+                            onClick={() => window.location.href = '/mycart'}
+                        >
+                            <span className="nav-icon">🛒</span>
+                            <span className="nav-label">Keranjang</span>
+                            {totalCartItems > 0 && <span className="cart-badge">{totalCartItems}</span>}
+                        </div>
+
+                        <div
+                            className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`}
+                            onClick={() => window.location.href = '/login'}
+                        >
+                            <span className="nav-icon">👤</span>
+                            <span className="nav-label">Akun</span>
+                        </div>
+                    </nav>
+                    <button ref={scrollTopBtnRef} className="scroll-top-btn" aria-label="Kembali ke atas" onClick={()=>window.scrollTo({top:0, behavior:'smooth'})}>
+                        <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>
+                    </button>
+
+                    {detailOpen && (
+                        <div className={`detail-overlay ${detailOpen ? 'open':''}`} onClick={(e)=>{ if (e.target.classList.contains('detail-overlay')) closeDetail(); }}>
+                            <div className="detail-sheet" role="dialog" aria-modal="true" onClick={(e)=>e.stopPropagation()}>
+                                <div class="detail-utility-bar" data-fallback-bar>
+                                    <button class="util-btn" onClick={closeDetail}>✕ <span>Tutup</span></button>
+                                    <div class="util-spacer"></div>
+                                    <button class="util-btn" onClick={()=>{ try { navigator.share && detailProduct && navigator.share({ title: detailProduct.name, url: window.location.href }); } catch(_){ } }}>🔗 <span>Share</span></button>
+                                </div>
+                                {/* Media Swiper */}
+                                <div className="detail-media-wrapper">
+                                    <div className="swiper detail-media-swiper" ref={detailMediaSwiperRef}>
+                                        <div className="swiper-wrapper">
+                                            {(detailProduct?.media_list || []).map((m,i)=>(
+                                                <div className="swiper-slide" key={i}>
+                                                    {m.type==='video' ? (
+                                                        <video src={m.url} muted playsInline loop preload="metadata" />
+                                                    ) : (
+                                                        <img src={m.url} loading="lazy" alt={detailProduct?.name||'Media'} />
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="swiper-pagination"></div>
+                                    </div>
+                                    <button className="detail-share-btn" style={{right:'54px'}} onClick={()=>{ try { navigator.share && navigator.share({ title: detailProduct?.name, url: window.location.href }); } catch(_){} }}>⤴</button>
+                                    <button className="detail-close-btn right" onClick={closeDetail}>✕</button>
+                                </div>
+
+                                {/* Tabs + Scrollable content */}
+                                <div className="detail-content-scroll" ref={detailScrollRef}>
+                                    <div className="detail-tabs">
+                                        <div className={`detail-tab ${detailActiveTab==='produk'?'active':''}`} onClick={()=>scrollToSection('produk')}>Produk</div>
+                                        <div className={`detail-tab ${detailActiveTab==='spec'?'active':''}`} onClick={()=>scrollToSection('spec')}>Spesifikasi</div>
+                                    </div>
+
+                                    <div ref={detailProdukSectionRef} className="detail-section" id="detail-produk-section">
+                                        <div className="detail-price-row">
+                                            <span className="detail-price-current">{detailProduct && ('Rp'+detailProduct.price?.toLocaleString('id-ID'))}</span>
+                                            {detailProduct?.old_price && <span className="detail-price-old">{'Rp'+detailProduct.old_price.toLocaleString('id-ID')}</span>}
+                                            {detailProduct?.discount && <span className="detail-discount-badge">{detailProduct.discount}%</span>}
+                                        </div>
+                                        <h3 className="detail-title">{detailProduct?.name}</h3>
+                                        {detailProduct?.subtitle && <p className="detail-sub">{detailProduct.subtitle}</p>}
+                                    </div>
+
+                                    <div className="detail-divider"></div>
+
+                                    <div ref={detailSpecSectionRef} className="detail-section" id="detail-spec-section">
+                                        <h4 style={{marginTop:'0'}}>Deskripsi</h4>
+                                        <p className="detail-desc">{detailProduct?.description}</p>
+                                        <h4 style={{marginTop:'18px'}}>Produk Terkait</h4>
+                                        <div className="related-scroll">
+                                            {products.slice(0,8).filter(r=>r.id!==detailProduct?.id).map(r => (
+                                                <div className="related-card" key={r.id} onClick={()=>openDetail(r)}>
+                                                    <img src={r.media} loading="lazy" alt={r.name} />
+                                                    <div className="rc-body">
+                                                        <h5>{r.name}</h5>
+                                                        <div className="rc-price">{'Rp'+r.price.toLocaleString('id-ID')}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <h4 style={{marginTop:'18px'}}>Spesifikasi</h4>
+                                        {detailProduct?.spec_html ? (
+                                            <div className="detail-spec-html" style={{fontSize:'12px', lineHeight:'1.5'}} dangerouslySetInnerHTML={{__html: detailProduct.spec_html}} />
+                                        ) : (
+                                            <div className="spec-grid">
+                                                {(detailProduct?.specs||[]).map((s,i)=>(
+                                                    <div key={i} className="spec-item">
+                                                        <div className="spec-label">{s.label}</div>
+                                                        <div className="spec-value">{s.value}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {detailProduct?.brochure_image && (
+                                            <div className="detail-brochure-wrapper">
+                                                <div className="detail-brochure-title">Brochure</div>
+                                                <img src={detailProduct.brochure_image} alt="Brochure" onError={(e)=>{ e.target.onerror=null; e.target.src='/placeholder/brochure-placeholder.png'; }} />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="detail-bottom-bar">
+                                        <div className="action-left">
+                                            <button className="detail-icon-btn" aria-label="Wishlist" onClick={()=>alert('Wishlist placeholder')}>♡</button>
+                                            <button className="detail-icon-btn" aria-label="Keranjang" onClick={()=>window.location.href='/mycart'}>
+                                                🛒{totalCartItems>0 && <span className="badge">{totalCartItems}</span>}
+                                            </button>
+                                        </div>
+                                        <div className="detail-bottom-flex">
+                                        {(() => {
+                                            if (!detailProduct) return null;
+                                            const qty = cart[detailProduct.id]||0;
+                                            if (qty === 0) {
+                                                return <button className="detail-cart-btn" onClick={()=>incrementProduct(detailProduct)}>Tambah ke Keranjang</button>;
+                                            }
+                                            return (
+                                                <div className="detail-qty-inline" style={{marginLeft:'auto', display:'flex',alignItems:'center',gap:'10px'}}>
+                                                    <button className="detail-inline-btn" onClick={()=>decrementProduct(detailProduct)}>−</button>
+                                                    <span style={{fontWeight:600,minWidth:'24px',textAlign:'center'}}>{qty}</span>
+                                                    <button className="detail-inline-btn" onClick={()=>incrementProduct(detailProduct)}>+</button>
+                                                </div>
+                                            )
+                                        })()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<MobileHomepage />);
+    </script>
+    <!-- Deployment / Cache Instructions:
+         1. Laravel cache clear: php artisan optimize:clear
+         2. If using route cache after route changes: php artisan route:cache
+         3. Browser hard refresh: (Win) Ctrl+Shift+R / (Mac) Cmd+Shift+R
+         4. If using Docker volume, ensure container picks latest file (restart if stale)
+         5. CDN/proxy (if any) purge cached /public/mobile-app.html
+    -->
+</body>
+</html>

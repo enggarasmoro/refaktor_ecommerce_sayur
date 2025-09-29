@@ -1,0 +1,107 @@
+#############################################
+# Paksayur Project .gitignore (Laravel + JS) #
+# Rewritten: memastikan hanya artefak build,  #
+# cache, dan rahasia yang terabaikan.        #
+# Penting: composer.lock & package.json       #
+# TETAP di-track untuk reproducibility.      #
+#############################################
+
+### Dependency folders
+node_modules/
+vendor/
+
+### Environment & secrets (jangan commit .env)
+.env
+.env.*
+!.env.example
+.env.backup
+.env.production
+.env.staging
+.env.testing
+
+### Laravel storage & bootstrap caches
+storage/*.key
+storage/app/public/*
+!storage/app/public/.gitignore
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing/*
+storage/logs/*
+bootstrap/cache/*.php
+
+### Public build artefacts / dev servers
+public/hot
+public/storage
+public/build
+public/mix-manifest.json
+public/bo/*
+public/backoffice/*
+public/frontend/*
+mix-manifest.json
+
+### Testing / coverage
+.phpunit.result.cache
+.phpunit.cache
+coverage/
+coverage.xml
+clover.xml
+
+### Logs & debug output
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+### IDE / Editor specific
+.idea/
+.vscode/
+.fleet/
+.zed/
+.nova/
+*.iml
+*.sublime-workspace
+*.sublime-project
+
+### OS cruft
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+### Misc / tools
+Homestead.json
+Homestead.yaml
+.phpactor.json
+.php-cs-fixer.cache
+/.php-cs-fixer.cache
+phpstan.result.cache
+psalm.xml.cache
+
+### Temporary & cache
+*.tmp
+*.temp
+*.cache
+*.swp
+*.swo
+*~
+
+### Local DB snapshots (hapus jika ingin versioning)
+*.sqlite
+*.sqlite-journal
+
+### Conflict backups
+*.orig
+
+### Security: jangan hapus baris berikut agar folder tetap ada di repo
+!storage/logs/.gitignore
+!storage/framework/.gitignore
+!storage/framework/cache/.gitignore
+!storage/framework/sessions/.gitignore
+!storage/framework/views/.gitignore
+!storage/app/.gitignore
+
+### NOTE:
+# - Jika Anda butuh melacak file di folder yang saat ini di-ignore, gunakan '!path/file.ext'.
+# - Pastikan menjalankan perintah berikut jika mengganti aturan setelah file sudah ter-commit:
+#   git rm -r --cached . && git add . && git commit -m "chore: refresh .gitignore"
+
