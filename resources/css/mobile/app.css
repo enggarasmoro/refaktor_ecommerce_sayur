@@ -1,0 +1,11 @@
+/* Toast styles */
+.toast-container { position:fixed; left:50%; bottom:90px; transform:translateX(-50%); width:100%; max-width:375px; display:flex; flex-direction:column; gap:10px; padding:0 16px; z-index:3000; pointer-events:none; }
+.toast-item { pointer-events:auto; display:flex; align-items:center; gap:8px; background:#ffffffee; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid #e0e5e7; border-radius:14px; padding:10px 14px; font-size:12px; font-weight:500; color:#333; box-shadow:0 4px 14px -4px rgba(0,0,0,0.18); animation:toastPop .35s cubic-bezier(.25,.8,.3,1); position:relative; }
+.toast-item:active { transform:scale(.97); }
+.toast-item.toast-success { border-color:#1d7a35; box-shadow:0 4px 14px -4px rgba(29,122,53,0.35); }
+.toast-item.toast-error { border-color:#ff5757; }
+.toast-item.toast-warning { border-color:#ffc107; }
+.toast-item.toast-info { border-color:#74b9ff; }
+.toast-message { flex:1; line-height:1.4; }
+.toast-close { background:none; border:none; cursor:pointer; font-size:14px; line-height:1; color:#555; padding:2px 4px; }
+@keyframes toastPop { 0% { opacity:0; transform:translate(-50%,10px) scale(.92); } 100% { opacity:1; transform:translate(-50%,0) scale(1); } }

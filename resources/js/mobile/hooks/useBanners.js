@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useToast } from '../context/ToastContext';
 import { getBanners } from '../api/client';
 
 export function useBanners(){
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const toast = useToast();
 
   useEffect(()=>{
     let active = true;
@@ -16,6 +18,7 @@ export function useBanners(){
       } catch(e){
         if (!active) return;
         setError(e);
+        toast && toast.error('Gagal memuat banner');
         setBanners([{ id:'default', name:'DISKON HINGGA 75RB', image:null, isDefault:true }]);
       } finally { if (active) setLoading(false); }
     })();

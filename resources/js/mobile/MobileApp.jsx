@@ -1,11 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, Suspense, lazy } from 'react';
 import { BannerSlider } from './components/BannerSlider';
 import { CategoriesSwiper } from './components/CategoriesSwiper';
 import { ProductsGrid } from './components/ProductsGrid';
-import { DetailSheet } from './components/DetailSheet';
+// Lazy load DetailSheet to reduce initial bundle
+const DetailSheet = lazy(()=> import('./components/DetailSheet').then(m=>({ default: m.DetailSheet })));
 import { BottomNavigation } from './components/BottomNavigation';
 import { useProductDetail } from './hooks/useProductDetail';
 import { CartProvider } from './context/CartContext';
+import { ToastProvider } from './context/ToastContext';
+import { ToastContainer } from './components/ToastContainer';
 
 export const MobileApp = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,8 +44,25 @@ export const MobileApp = () => {
     return ()=> { window.removeEventListener('scroll', onScroll); if (timer) clearTimeout(timer); };
   }, []);
 
+  // Prefetch DetailSheet on idle (after 2s) and first pointer move over product list
+  useEffect(()=>{
+    let prefetched = false;
+    const doPrefetch = () => {
+      if (prefetched) return; prefetched = true;
+      import('./components/DetailSheet');
+    };
+    const idleTimer = setTimeout(doPrefetch, 2000);
+    const onPointerMove = (e) => {
+      const el = e.target.closest && e.target.closest('.products-grid');
+      if (el) { doPrefetch(); window.removeEventListener('pointermove', onPointerMove); }
+    };
+    window.addEventListener('pointermove', onPointerMove, { passive:true });
+    return () => { clearTimeout(idleTimer); window.removeEventListener('pointermove', onPointerMove); };
+  }, []);
+
   return (
-    <CartProvider>
+    <ToastProvider>
+      <CartProvider>
       <div className="mobile-homepage">
         <BannerSlider />
         <header className="app-header">
@@ -59,9 +79,13 @@ export const MobileApp = () => {
         <button ref={scrollTopBtnRef} className="scroll-top-btn" aria-label="Kembali ke atas" onClick={()=>window.scrollTo({top:0, behavior:'smooth'})}>
           <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>
         </button>
-        <DetailSheet controller={detailController} />
+        <Suspense fallback={null}>
+          <DetailSheet controller={detailController} />
+        </Suspense>
+        <ToastContainer />
       </div>
-    </CartProvider>
+      </CartProvider>
+    </ToastProvider>
   );
 };
 

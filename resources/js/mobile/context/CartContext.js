@@ -20,10 +20,12 @@ export const CartProvider = ({ children }) => {
     });
   }, []);
 
+  const clearCart = useCallback(()=>{ setCart({}); }, []);
+
   const totalItems = Object.values(cart).reduce((a,b)=>a+b,0);
 
   return (
-    <CartContext.Provider value={{ cart, increment, decrement, totalItems }}>
+    <CartContext.Provider value={{ cart, increment, decrement, clearCart, totalItems }}>
       {children}
     </CartContext.Provider>
   );

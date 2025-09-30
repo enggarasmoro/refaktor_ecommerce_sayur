@@ -1,5 +1,5 @@
 // Central API client with version prefix & envelope normalization
-const API_PREFIX = '/api/v1';
+export const API_PREFIX = '/api/v1';
 
 const extract = (json) => {
   if (!json) return { data: [], meta: {} };

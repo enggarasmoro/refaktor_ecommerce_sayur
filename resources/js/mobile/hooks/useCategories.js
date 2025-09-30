@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useToast } from '../context/ToastContext';
 import { getCategories } from '../api/client';
 
 export function useCategories(){
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const toast = useToast();
 
   useEffect(()=>{
     let active = true;
@@ -16,6 +18,7 @@ export function useCategories(){
       } catch(e){
         if (!active) return;
         setError(e);
+        toast && toast.error('Gagal memuat kategori');
         // fallback categories
         setCategories([
           { id: 1, name: 'Sayuran', icon: '🥗', color: '#96CEB4' },

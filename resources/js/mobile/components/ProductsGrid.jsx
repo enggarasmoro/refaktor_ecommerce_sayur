@@ -17,6 +17,24 @@ export const ProductsGrid = ({ onOpenDetail }) => {
     return () => io.disconnect();
   }, [hasMore, loading, loadNext]);
 
+  // Video autoplay/pause when element is sufficiently visible
+  useEffect(()=>{
+    if (!products.length) return;
+    const vids = Array.from(document.querySelectorAll('.product-media video'));
+    if (!('IntersectionObserver' in window)) {
+      vids.forEach(v=>{ try { v.play(); } catch(_){} });
+      return; // no cleanup needed
+    }
+    const vObserver = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { try { en.target.play(); } catch(_){} }
+        else { try { en.target.pause(); } catch(_){} }
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(v=>vObserver.observe(v));
+    return () => vObserver.disconnect();
+  }, [products]);
+
   if (initialLoading) {
     return (
       <section className="products-section">

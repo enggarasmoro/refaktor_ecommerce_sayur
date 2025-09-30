@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useToast } from '../context/ToastContext';
 import { getProductDetail } from '../api/client';
 
 // Manage detail modal state & enrichment
@@ -6,6 +7,7 @@ export function useProductDetail(){
   const [open, setOpen] = useState(false);
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const openDetail = (product, { target } = {}) => {
     // Base object from list
@@ -29,7 +31,7 @@ export function useProductDetail(){
     setLoading(true);
 
     getProductDetail(product.id).then(d => {
-      if (!d) return;
+      if (!d) { toast && toast.error('Gagal memuat detail produk'); return; }
       const enriched = { ...base };
       if (Array.isArray(d.media_list) && d.media_list.length) {
         const norm = (u)=> u && !u.startsWith('http') && !u.startsWith('/') ? ('/frontend/'+u.replace(/^frontend\//,'')) : u;
@@ -44,7 +46,7 @@ export function useProductDetail(){
       }
       if (d.spec_html) { enriched.spec_html = d.spec_html; enriched.specs = []; }
       setDetail(enriched);
-    }).finally(()=> setLoading(false));
+    }).catch(()=>{ toast && toast.error('Gagal memuat detail produk'); }).finally(()=> setLoading(false));
   };
 
   const closeDetail = () => { setOpen(false); setTimeout(()=> setDetail(null), 300); };
