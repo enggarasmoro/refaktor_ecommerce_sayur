@@ -44,3 +44,11 @@ export async function getProductDetail(id){
     if (json && json.data) return json.data; return json;
   } catch (e) { return null; }
 }
+
+export async function getRelatedProducts(id){
+  const url = `/api/v1/products/${id}/related`;
+  const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
+  if (!res.ok) throw new Error('HTTP '+res.status);
+  const json = await res.json();
+  if (json && json.data) return json.data; return [];
+}

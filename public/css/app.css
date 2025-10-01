@@ -12696,6 +12696,220 @@ body.no-scroll {
   max-height: 100%;
 }
 
+/* Related products slider */
+.related-swiper-wrapper {
+  position: relative;
+  margin: 10px -4px 0;
+}
+
+.related-swiper {
+  padding: 4px 2px 18px;
+}
+
+.related-swiper .swiper-slide {
+  height: auto;
+}
+
+.rel-card {
+  background: #fff;
+  border: 1px solid #eceff1;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.rel-card {
+  height: 100%;
+}
+
+.rel-card:active {
+  transform: scale(0.97);
+}
+
+.rel-media {
+  aspect-ratio: 1/1;
+  width: 100%;
+  background: #f5f7f5;
+  position: relative;
+}
+
+.rel-media img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+}
+
+.rel-body {
+  padding: 8px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rel-title {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  max-height: 2.6em;
+  overflow: hidden;
+}
+
+.rel-sub {
+  font-size: 10px;
+  color: #66706b;
+  line-height: 1.3;
+  max-height: 2.6em;
+  overflow: hidden;
+}
+
+.rel-price-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.rel-price {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff7a00;
+}
+
+.rel-old {
+  font-size: 10px;
+  text-decoration: line-through;
+  color: #bbb;
+}
+
+.rel-add-btn {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background: #1d7a35;
+  color: #fff;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.rel-add-btn:active {
+  transform: scale(0.9);
+}
+
+.rel-add-btn .rel-qty-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #df5800;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.35);
+}
+
+.rel-nav {
+  position: absolute;
+  top: 40%;
+  width: 32px;
+  height: 32px;
+  margin-top: -16px;
+  background: rgba(255, 255, 255, 0.8509803922);
+  backdrop-filter: blur(4px);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+  cursor: pointer;
+  transition: background 0.25s, opacity 0.25s;
+}
+
+.rel-prev {
+  left: -6px;
+}
+
+.rel-next {
+  right: -6px;
+}
+
+.rel-nav:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rel-prev:before, .rel-next:before {
+  content: ">";
+  font-size: 16px;
+  font-weight: 600;
+  color: #1d1f1e;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.rel-prev:before {
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+/* Section containers for custom separation */
+.detail-section-block {
+  padding: 0 0 0;
+}
+
+.detail-section-block + .detail-section-block {
+  margin-top: 22px;
+}
+
+.detail-section-block-header {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.detail-divider-line {
+  height: 1px;
+  background: linear-gradient(90deg, #e3e7e3, #f0f2f0);
+  margin: 18px 0 18px;
+  border-radius: 2px;
+}
+
+.detail-spec-html {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.spec-grid .spec-label {
+  font-size: 10px;
+}
+
+.spec-grid .spec-value {
+  font-size: 12px;
+}
+
 /* Bottom navigation & badges */
 .bottom-navigation {
   position: fixed;
@@ -13390,6 +13604,13 @@ body.no-scroll {
   border-radius: 0 0 14px 14px;
   display: block;
   box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.18);
+}
+
+/* Unified heading sizing for detail sheet sections */
+.detail-section h4, .detail-section .h4 {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
 
 /* Title removed; keep selector minimal to avoid leftover spacing if present in legacy */

@@ -30,6 +30,7 @@ Route::prefix('v1')->group(function(){
     // Products endpoint for mobile infinite scroll
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
+    Route::get('/products/{id}/related', [ProductController::class, 'related']);
 });
 
 // Deprecation handlers for unversioned endpoints (force clients to migrate)

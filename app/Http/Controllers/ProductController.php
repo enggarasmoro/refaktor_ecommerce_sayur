@@ -29,5 +29,14 @@ class ProductController extends Controller
 		$detail = $this->service->detail($id);
 		return response()->json($detail);
 	}
+
+	/**
+	 * Related products endpoint.
+	 */
+	public function related(int $id): JsonResponse
+	{
+		$related = $this->service->related($id, 9);
+		return response()->json($related);
+	}
 }
 

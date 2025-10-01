@@ -46010,7 +46010,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getBanners: () => (/* binding */ getBanners),
 /* harmony export */   getCategories: () => (/* binding */ getCategories),
 /* harmony export */   getProductDetail: () => (/* binding */ getProductDetail),
-/* harmony export */   getProducts: () => (/* binding */ getProducts)
+/* harmony export */   getProducts: () => (/* binding */ getProducts),
+/* harmony export */   getRelatedProducts: () => (/* binding */ getRelatedProducts)
 /* harmony export */ });
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var _excluded = ["data", "meta"];
@@ -46230,6 +46231,46 @@ function _getProductDetail() {
     }, _callee5, null, [[0, 5]]);
   }));
   return _getProductDetail.apply(this, arguments);
+}
+function getRelatedProducts(_x3) {
+  return _getRelatedProducts.apply(this, arguments);
+}
+function _getRelatedProducts() {
+  _getRelatedProducts = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(id) {
+    var url, res, json;
+    return _regenerator().w(function (_context6) {
+      while (1) switch (_context6.n) {
+        case 0:
+          url = "/api/v1/products/".concat(id, "/related");
+          _context6.n = 1;
+          return fetch(url, {
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+        case 1:
+          res = _context6.v;
+          if (res.ok) {
+            _context6.n = 2;
+            break;
+          }
+          throw new Error('HTTP ' + res.status);
+        case 2:
+          _context6.n = 3;
+          return res.json();
+        case 3:
+          json = _context6.v;
+          if (!(json && json.data)) {
+            _context6.n = 4;
+            break;
+          }
+          return _context6.a(2, json.data);
+        case 4:
+          return _context6.a(2, []);
+      }
+    }, _callee6);
+  }));
+  return _getRelatedProducts.apply(this, arguments);
 }
 
 /***/ }),

@@ -38,4 +38,9 @@ class ProductService
         $produk = $this->products->findActiveWithMedia($id);
         return $produk->toDetailArray();
     }
+
+    public function related(int $id, int $limit = 9): array
+    {
+        return [ 'data' => $this->products->related($id, $limit) ];
+    }
 }

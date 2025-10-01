@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
 import { useCart } from '../context/CartContext';
+import { useRelatedProducts } from '../hooks/useRelatedProducts';
 
 export const DetailSheet = ({ controller }) => {
   const { open, detail, loading, closeDetail } = controller;
@@ -14,6 +15,7 @@ export const DetailSheet = ({ controller }) => {
   const [activeTab, setActiveTab] = useState('produk');
   const [descExpanded, setDescExpanded] = useState(false);
   const [fitMode, setFitMode] = useState(false); // global toggle for contain
+  const { items: relatedItems, loading: relatedLoading } = useRelatedProducts(detail);
 
   // Debug marker (must stay BEFORE any conditional early return to keep hook order stable)
   useEffect(()=>{ if (open) console.debug('[DetailSheet] version 2025-10-01-c loaded'); }, [open]);
@@ -142,14 +144,56 @@ export const DetailSheet = ({ controller }) => {
                 {descExpanded ? 'Sembunyikan' : 'Baca Selengkapnya'}
               </button>
             )}
-            <div className="detail-soft-divider" />
-            <h4 style={{marginTop:'0'}}>Produk Terkait</h4>
-            {/* Placeholder related products */}
-            <div className="detail-soft-divider" />
+            <div className="detail-divider-line" />
+            <div className="detail-section-block" id="related-products-block">
+              <h4 className="detail-section-block-header" style={{marginTop:0}}>Produk Terkait</h4>
+              <div className="related-swiper-wrapper">
+              {relatedLoading && <div style={{padding:'8px 4px', fontSize:'12px'}}>Memuat...</div>}
+              {!relatedLoading && relatedItems.length === 0 && <div style={{padding:'8px 4px', fontSize:'12px'}}>Tidak ada produk terkait</div>}
+              {relatedItems.length > 0 && (
+                <div className="swiper related-swiper" ref={el=>{
+                  if (!el) return; if (el._init) return; el._init = true;
+                  new Swiper(el, {
+                    slidesPerView: 2.2,
+                    spaceBetween: 12,
+                    navigation:{ nextEl: el.parentElement.querySelector('.rel-next'), prevEl: el.parentElement.querySelector('.rel-prev') },
+                    breakpoints: { 520: { slidesPerView: 3.2 } }
+                  });
+                }}>
+                  <div className="swiper-wrapper">
+                    {relatedItems.map(p=> {
+                      const pQty = cart[p.id] || 0;
+                      return (
+                      <div className="swiper-slide" key={p.id}>
+                        <div className="rel-card" onClick={()=>{ controller.openDetail(p); }}>
+                          <div className="rel-media"><img src={p.media} alt={p.name} loading="lazy" /></div>
+                          <div className="rel-body">
+                            <div className="rel-title">{p.name}</div>
+                            {p.subtitle && <div className="rel-sub">{p.subtitle}</div>}
+                            <div className="rel-price-row">
+                              <span className="rel-price">Rp{p.price?.toLocaleString('id-ID')}</span>
+                              {p.old_price && p.old_price > p.price && <span className="rel-old">Rp{p.old_price.toLocaleString('id-ID')}</span>}
+                            </div>
+                            <button className="rel-add-btn" onClick={(e)=>{ e.stopPropagation(); increment(p); }}>
+                              +{pQty>0 && <span className="rel-qty-badge">{pQty}</span>}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      );
+                    })}
+                  </div>
+                  <div className="rel-prev rel-nav" />
+                  <div className="rel-next rel-nav" />
+                </div>
+              )}
+              </div>
+            </div>
+            <div className="detail-divider-line" />
             <h4 style={{marginTop:'0'}}>Spesifikasi</h4>
             <div className="detail-spec-wrapper expanded">
               {detail?.spec_html ? (
-                <div className="detail-spec-html" style={{fontSize:'12px', lineHeight:'1.5'}} dangerouslySetInnerHTML={{__html: detail.spec_html}} />
+                <div className="detail-spec-html" dangerouslySetInnerHTML={{__html: detail.spec_html}} />
               ) : (
                 <div className="spec-grid">
                   {(detail?.specs||[]).map((s,i)=>(

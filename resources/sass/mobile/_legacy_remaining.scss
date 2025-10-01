@@ -63,6 +63,8 @@
 /* Brochure & related visuals */
 .detail-brochure-wrapper { margin:14px -16px 6px; padding:0; }
 .detail-brochure-wrapper img { width:100%; height:auto; object-fit:contain; border-radius:0 0 14px 14px; display:block; box-shadow:0 4px 16px -4px rgba(0,0,0,0.18); }
+/* Unified heading sizing for detail sheet sections */
+.detail-section h4 { font-size:14px; font-weight:700; letter-spacing:.2px; }
 /* Title removed; keep selector minimal to avoid leftover spacing if present in legacy */
 .detail-brochure-title { display:none; }
 
