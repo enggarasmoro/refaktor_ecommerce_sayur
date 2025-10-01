@@ -1,0 +1,44 @@
+/* Detail sheet specific styles & scrollbar hiding (migrated from resources/js/mobile/css/detail.css) */
+.detail-content-scroll {
+  position:relative;
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden; /* prevent horizontal scroll from negative margins */
+  -webkit-overflow-scrolling:touch;
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar { display: none; }
+  padding:0 16px 80px;
+  /* Full-bleed blocks (media & tabs) using negative margins to cancel parent padding */
+  > .detail-media-wrapper,
+  > .detail-tabs { margin-left:-16px; margin-right:-16px; width:auto; position:relative; left:auto; transform:none; }
+}
+
+/* Ensure sheet uses full available height and columns layout for scroll + bottom bar */
+.detail-sheet { display:flex; flex-direction:column; max-height:100%; overflow:hidden; /* removed scrollbar-gutter to avoid reserved right space */ }
+
+/* Sticky tabs inside scroll area */
+.detail-content-scroll > .detail-tabs { position:sticky; top:0; z-index:25; background:linear-gradient(180deg,#f6f9f3,#fff); border-bottom:1px solid #eceff1; }
+
+/* When body scroll is locked prevent background scroll */
+body.no-scroll { overflow:hidden; }
+
+/* Section padding (except media & tabs which already span full width visually) */
+.detail-section { padding:0; }
+/* Text sections already inside container padded by parent scroll; headings spaced by existing margins. */
+
+/* Media navigation arrows */
+.detail-media-wrapper .media-nav { position:absolute; top:50%; width:34px; height:34px; margin-top:-17px; background:rgba(255,255,255,0.55); backdrop-filter:blur(4px); border-radius:50%; box-shadow:0 2px 8px rgba(0,0,0,0.25); z-index:5; cursor:pointer; transition:background .25s, opacity .25s; opacity:0; }
+.detail-media-wrapper:hover .media-nav { opacity:1; }
+.detail-media-wrapper .swiper-button-prev.media-nav { left:10px; }
+.detail-media-wrapper .swiper-button-next.media-nav { right:10px; }
+.detail-media-wrapper .media-nav:after { font-size:16px; color:#1d1f1e; }
+
+/* Pagination overlay on media (clean, tanpa gradient gelap) */
+.detail-media-wrapper { position:relative; }
+.detail-media-wrapper .swiper-pagination { position:absolute !important; bottom:12px !important; left:0; right:0; margin:0 !important; }
+.detail-media-wrapper .swiper-slide { height:100%; }
+
+/* Constrain video height same as images already controlled by wrapper height */
+.detail-media-wrapper video { max-height:100%; }

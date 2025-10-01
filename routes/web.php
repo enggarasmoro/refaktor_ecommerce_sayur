@@ -13,7 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Homepage now controlled via feature flag MOBILE_APP_VERSION=new
 Route::get('/', function () {
+    if (env('MOBILE_APP_VERSION', 'legacy') === 'new' && view()->exists('mobile.app')) {
+        return view('mobile.app');
+    }
     return response()->file(public_path('mobile-app.html'));
 })->name('home');
 
@@ -71,10 +75,11 @@ Route::namespace('Auth')->group(function () {
 // Route::get('/home/getkategori', 'HomeController@getkategori');
 // Route::get('/', 'HomeController@index')->name('home');
 
-// New Mobile App as Homepage
-Route::get('/', function () {
-    return response()->file(public_path('mobile-app.html'));
-})->name('home');
+// Preview new mobile app without flipping flag (QA route)
+Route::get('/mobile-preview', function(){
+    abort_unless(view()->exists('mobile.app'), 404);
+    return view('mobile.app');
+})->name('mobile.preview');
 
 // Keep old home functionality for API calls if needed
 Route::get('/old-home', 'HomeController@index')->name('old.home');

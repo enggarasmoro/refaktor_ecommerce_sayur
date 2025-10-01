@@ -1,0 +1,12 @@
+/* Detail sheet specific styles & scrollbar hiding */
+.detail-content-scroll {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.detail-content-scroll::-webkit-scrollbar { display: none; }
+
+/* Ensure media now participates in scroll flow */
+.detail-content-scroll .detail-media-wrapper {
+  position: relative; /* previously might have been fixed/sticky outside scroll */
+  top: 0;
+}

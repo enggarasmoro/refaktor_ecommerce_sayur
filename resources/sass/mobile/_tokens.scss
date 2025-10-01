@@ -1,0 +1,18 @@
+// Design tokens extracted from legacy mobile-app.html
+:root {
+  --cat-gap-row-one: 4px;
+  --cat-gap-col-one: 6px;
+  --cat-gap-row-two: 8px;
+  --cat-gap-col-two: 10px;
+  --cat-icon-size-one: 60px;
+  --cat-icon-size-two: 55px;
+  --cat-item-width-one: 70px;
+  --cat-item-width-two: 62px;
+  --cat-gap-col-one: 8px;
+  --cat-gap-row-one: 10px;
+  --cat-gap-col-two: 6px;
+  --cat-gap-row-two: 8px;
+  /* Mobile background base color (previously hardcoded #f8f9fa) */
+  --mobile-bg: #f5f7f6; /* slightly warmer neutral than #f8f9fa */
+  --mobile-bg-alt: #f8f9fa;
+}

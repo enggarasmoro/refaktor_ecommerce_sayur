@@ -1,5 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useCategories } from '../hooks/useCategories';
+import Swiper from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/swiper-bundle.css';
+Swiper.use([Navigation, Pagination]);
 
 export const CategoriesSwiper = () => {
   const { categories } = useCategories();
@@ -7,13 +11,16 @@ export const CategoriesSwiper = () => {
 
   useEffect(()=>{
     if (!categories.length) return;
-    if (!window.Swiper) return;
     const containerEl = ref.current;
     if (!containerEl) return;
     if (containerEl.__swiperInstance) { try { containerEl.__swiperInstance.destroy(true,true);} catch(_){} }
     const slidesCount = containerEl.querySelectorAll('.swiper-slide').length;
     const instance = new Swiper(containerEl, {
       pagination: { el: containerEl.querySelector('.swiper-pagination'), clickable:true },
+      navigation: {
+        nextEl: containerEl.querySelector('.swiper-button-next'),
+        prevEl: containerEl.querySelector('.swiper-button-prev')
+      },
       slidesPerView: 1,
       speed:420,
       spaceBetween:8,
@@ -62,6 +69,8 @@ export const CategoriesSwiper = () => {
         <div className="swiper" id="categoriesSwiper" ref={ref}>
           <div className="swiper-wrapper">{slides}</div>
           <div className="swiper-pagination" />
+          <div className="swiper-button-prev" />
+          <div className="swiper-button-next" />
         </div>
       </div>
     </section>

@@ -1,0 +1,8 @@
+// Mobile bundle stylesheet aggregator
+// Order: tokens -> layout -> domain-specific (detail etc.)
+@import 'tokens';
+@import 'layout';
+@import 'detail';
+@import 'nav';
+@import 'detail_extras';
+@import 'legacy_remaining'; // newly extracted leftover styles
